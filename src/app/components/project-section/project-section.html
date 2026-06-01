@@ -1,0 +1,25 @@
+<div class="relative w-full min-h-25 flex flex-col bg-base-background z-50 overflow-hidden">
+  <div class="bar top-bar w-full px-3 p-2 bg-black/15 z-50" [ngStyle]="{ height: barHeight }">
+    <!-- large screen navbar  -->
+    <div class="navbar flex justify-between items-center gap-4 w-full h-full">
+      <div class="title text-center text-xs text-white">{{ title }}</div>
+      <div class="controls flex gap-2">
+        <div class="minimize">
+          <fa-icon class="fa-icon" [icon]="Icons.faWindowMinimize"></fa-icon>
+        </div>
+        <div class="maximize">
+          <fa-icon class="fa-icon" [icon]="Icons.faExpand"></fa-icon>
+        </div>
+        <div class="close">
+          <fa-icon class="fa-icon" [icon]="Icons.faX"></fa-icon>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bar content w-full h-full flex-1">
+    <!-- Content comes from parent -->
+    <ng-content></ng-content>
+  </div>
+</div>
+
