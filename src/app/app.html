@@ -61,6 +61,26 @@
       </div>
     </div>
   </app-project-page>
+  <app-project-page title="Mohamed&lt;Projects&gt;" [Navbar]="true">
+    <div class="p-8 grid lg:grid-cols-2 gap-8 items-center w-full">
+      <!-- Code Animation -->
+      <div class="order-2 sm:order-1 w-full">
+        <app-project-typing-component />
+      </div>
+
+      <!-- Project Details -->
+      <div class="order-1 sm:order-2 flex justify-center">
+        <app-project-section title="current-project" class="w-full">
+          <div class="aspect-video overflow-hidden rounded-xl shadow-lg w-full">
+            <img
+              src="assets/images/project-preview.png"
+              class="w-full h-full object-cover"
+            />
+          </div>
+        </app-project-section>
+      </div>
+    </div>
+  </app-project-page>
 </main>
 
 <router-outlet />
