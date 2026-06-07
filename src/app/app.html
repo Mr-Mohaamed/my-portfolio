@@ -17,7 +17,7 @@
         <div class="sm:w-140 order-2 z-30">
           <app-project-section title="about-me">
             <div class="px-6 p-3">
-              <ol class="list-decimal list-outside text-white text-xs space-y-1">
+              <ol class="list-decimal list-inside text-white text-xs space-y-1">
                 <li>Hi, I'm <span class="text-code-green">Mohamed</span>, a <span class="text-code-blue">Fullstack</span> software engineer!</li>
                 <li>My foucs is on <span class="text-code-red">creative development</span>: my skills can be described as the <span class="text-code-blue">meeting point</span> between <span class="text-code-yellow">creativity</span> and <span class="text-code-aqua">technical proficiency</span></li>
                 <li>I intergrate complex but smooth animation and interactions into my projects, to present the website infromation in an engaging way and make it a memorable experience</li>
@@ -62,25 +62,83 @@
     </div>
   </app-project-page>
   <app-project-page title="Mohamed&lt;Projects&gt;" [Navbar]="true">
-    <div class="p-8 grid lg:grid-cols-2 gap-8 items-center w-full">
+    <div class="p-8 grid lg:grid-cols-2 gap-8 items-center w-full relative z-40">
       <!-- Code Animation -->
-      <div class="order-2 sm:order-1 w-full">
+      <div class="order-2 sm:order-1 w-full rounded-2xl ">
         <app-project-typing-component />
+          <div class="flex gap-4 mt-4">
+            <button
+              class="w-1/3 py-4 rounded-lg font-semibold transition-all duration-200
+                    bg-white text-black shadow-md
+                    hover:shadow-lg hover:-translate-y-1
+                    disabled:hover:translate-0
+                    disabled:bg-gray-200 disabled:text-gray-400 disabled:shadow-none
+                    enabled:cursor-pointer disabled:cursor-not-allowed"
+              [disabled]="!projectService.getSelectedProject?.viewUrl"
+            >
+              VIEW
+            </button>
+
+            <button
+              class="w-1/3 py-4 rounded-lg font-semibold transition-all duration-200
+                    bg-white text-black shadow-md
+                    disabled:hover:translate-0
+                    hover:shadow-lg hover:-translate-y-1
+                    disabled:bg-gray-200 disabled:text-gray-400 disabled:shadow-none
+                    enabled:cursor-pointer disabled:cursor-not-allowed "
+              [disabled]="!projectService.getSelectedProject?.githubUrl"
+            >
+              GITHUB
+            </button>
+
+            <button
+              class="w-1/3 py-4 rounded-lg font-semibold transition-all duration-200
+                    bg-white text-black shadow-md
+                    hover:shadow-lg hover:-translate-y-1
+                    cursor-pointer"
+              (click)="openGallery()"
+            >
+              GALLERY
+            </button>
+          </div>
       </div>
 
       <!-- Project Details -->
       <div class="order-1 sm:order-2 flex justify-center">
         <app-project-section title="current-project" class="w-full">
-          <div class="aspect-video overflow-hidden rounded-xl shadow-lg w-full">
+          <div class="aspect-video overflow-hidden rounded-b-xl shadow-lg w-full">
             <img
-              src="assets/images/project-preview.png"
+              [src]="this.projectService.getSelectedProject?.projectSrc"
               class="w-full h-full object-cover"
             />
           </div>
         </app-project-section>
       </div>
     </div>
+    <div class="w-full mt-8 relative z-40 px-8">
+      <div class="flex gap-4 overflow-x-auto pb-2 scrollbar-thumb-code-green justify-center">
+        @for (project of projectService.projects; track project.id) {
+          <button
+            class="shrink-0 cursor-pointer transition hover:scale-105"
+            (click)="selectProject(project.id!)"
+          >
+            <img
+              [src]="project.projectSrc"
+              [alt]="project.name"
+              class="w-40 h-24 rounded-lg object-cover border-2"
+              [class.border-primary]="project.id === projectService.selectedProject()"
+            />
+          </button>
+        }
+      </div>
+    </div>
   </app-project-page>
 </main>
+
+@if (isGalleryShown()) {
+  <app-gallery-component
+    (close)="closeGallery()"
+  />
+}
 
 <router-outlet />
