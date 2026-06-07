@@ -1,0 +1,60 @@
+<div
+  class="fixed inset-0 z-50 bg-black/80 flex justify-center items-center "
+  (click)="closeGallery()"
+>
+  <div
+    class="relative bg-zinc-900 rounded-2xl p-4 w-full max-w-6xl max-h-[90vh] flex flex-col shadow-2xl "
+    (click)="$event.stopPropagation()"
+  >
+    <!-- Close Button -->
+    <button
+      class="absolute top-5 right-7 text-white/80 hover:text-white text-2xl z-40 cursor-pointer aspect-square"
+      (click)="closeGallery()"
+    >
+      ✕
+    </button>
+
+    <!-- Image Container -->
+    <div class="relative aspect-video overflow-hidden rounded-xl w-full bg-black mb-2">
+      <img
+        [src]="gallerySelectedImage()"
+        class="w-full h-full object-contain"
+        alt="Selected image"
+      />
+
+      <!-- Prev -->
+      <button
+        class="cursor-pointer absolute left-3 top-1/2 -translate-y-1/2 bg-gray-800 hover:bg-gray-900 text-white px-3 py-2 rounded-full"
+        (click)="previousImage()"
+      >
+        ←
+      </button>
+
+      <!-- Next -->
+      <button
+        class="cursor-pointer absolute right-3 top-1/2 -translate-y-1/2 bg-gray-800 hover:bg-gray-900 text-white px-3 py-2 rounded-full"
+        (click)="nextImage()"
+      >
+        →
+      </button>
+    </div>
+
+    <!-- Thumbnails -->
+    <div class="flex gap-3 overflow-x-auto scrollbar-thin scrollbar-thumb-zinc-700 py-2 justify-center">
+      @for (image of images; track image) {
+        <button
+          class="cursor-pointer shrink-0 rounded-lg overflow-hidden border-2 transition hover:scale-105"
+          [class.border-blue-500]="gallerySelectedImage() === image"
+          [class.border-transparent]="gallerySelectedImage() !== image"
+          (click)="selectImage(image)"
+        >
+          <img
+            [src]="image"
+            class="w-28 h-20 object-cover"
+            alt="Thumbnail"
+          />
+        </button>
+      }
+    </div>
+  </div>
+</div>
