@@ -1,4 +1,5 @@
-import { Component, OnDestroy, OnInit, signal, WritableSignal } from '@angular/core';
+import { Component, effect, OnDestroy, OnInit, signal, WritableSignal } from '@angular/core';
+import { ProjectService } from './../../services/project-service';
 
 @Component({
   selector: 'app-project-typing-component',
@@ -7,65 +8,67 @@ import { Component, OnDestroy, OnInit, signal, WritableSignal } from '@angular/c
   styleUrl: './project-typing-component.css',
 })
 export class ProjectTypingComponent implements OnInit, OnDestroy {
-  displayedText: WritableSignal<string> = signal('');
+  constructor(public projectService: ProjectService) {
+    effect(() => {
+      this.projectService.selectedProject();
 
-  private projects = [
-    `const project = {
-  name: "Hospital ERP",
-  stack: [".NET", "Angular", "SQL Server"],
-  status: "Production"
-};`,
-
-    `const project = {
-  name: "Job Portal",
-  stack: [".NET", "Angular"],
-  features: ["CV Upload", "Email Service"]
-};`,
-
-    `const project = {
-  name: "Scientific Experiments",
-  stack: ["WPF", "MVVM", "LiveCharts"],
-  realtime: true
-};`,
-  ];
-
-  private projectIndex = 0;
-  private charIndex = 0;
-  private deleting = false;
-  private timer: any;
-
-  ngOnInit() {
-    this.animate();
+      this.restartAnimation();
+    });
   }
 
-  ngOnDestroy() {
+  displayedText: WritableSignal<string> = signal('');
+
+  private charIndex = 0;
+  private timer: any;
+
+  ngOnInit(): void {
+    this.startTyping();
+  }
+
+  ngOnDestroy(): void {
     clearTimeout(this.timer);
   }
 
-  private animate() {
-    const current = this.projects[this.projectIndex];
+  private getCurrentProjectText(): string {
+    const project = this.projectService.projects[this.projectService.selectedProject() - 1];
 
-    if (!this.deleting) {
-      this.displayedText.set(current.substring(0, this.charIndex++));
+    const lines = [
+      `name: "${project.name}"`,
+      `stack: "${project.stack}"`,
+      `features: [${project.features.map((f) => `"${f}"`).join(', ')}]`,
+    ];
 
-      if (this.charIndex > current.length) {
-        this.deleting = true;
-        this.timer = setTimeout(() => this.animate(), 2000);
-        return;
-      }
-    } else {
-      this.displayedText.set(current.substring(0, this.charIndex--));
-
-      if (this.charIndex < 0) {
-        this.deleting = false;
-        this.projectIndex = (this.projectIndex + 1) % this.projects.length;
-        this.charIndex = 0;
-
-        this.timer = setTimeout(() => this.animate(), 500);
-        return;
-      }
+    if (project.frontend) {
+      lines.push(`frontend: "${project.frontend}"`);
     }
 
-    this.timer = setTimeout(() => this.animate(), this.deleting ? 20 : 40);
+    if (project.backend) {
+      lines.push(`backend: "${project.backend}"`);
+    }
+
+    return `const project = {\n  ${lines.join(',\n  ')}\n};`;
+  }
+
+  private restartAnimation(): void {
+    clearTimeout(this.timer);
+
+    this.displayedText.set('');
+    this.charIndex = 0;
+
+    this.startTyping();
+  }
+
+  private startTyping(): void {
+    const text = this.getCurrentProjectText();
+
+    if (this.charIndex <= text.length) {
+      this.displayedText.set(text.substring(0, this.charIndex));
+
+      this.charIndex++;
+
+      this.timer = setTimeout(() => {
+        this.startTyping();
+      }, 30);
+    }
   }
 }
