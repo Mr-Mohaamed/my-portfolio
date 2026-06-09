@@ -75,3 +75,20 @@ body {
 .page-title {
   @apply text-xs font-bold uppercase text-base-content;
 }
+
+.contact-icon {
+  @apply flex items-center justify-center
+         w-16 h-16
+         rounded-full
+         bg-zinc-800/70
+         border border-zinc-700
+         text-2xl
+         transition-all duration-300
+         hover:scale-110
+         hover:border-code-green
+         hover:shadow-lg;
+}
+
+.contact-icon fa-icon {
+  font-size: 1.75rem;
+}

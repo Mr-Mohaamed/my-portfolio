@@ -1,7 +1,8 @@
 export interface ProjectType {
   id?: number;
   name: string;
-  stack: 'frontend' | 'backend';
+  stack: 'frontend' | 'backend' | 'fullstack';
+  description?: string;
   frontend?: string;
   backend?: string;
   features: string[];

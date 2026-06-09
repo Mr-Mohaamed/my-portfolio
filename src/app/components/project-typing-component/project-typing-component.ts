@@ -32,11 +32,7 @@ export class ProjectTypingComponent implements OnInit, OnDestroy {
   private getCurrentProjectText(): string {
     const project = this.projectService.projects[this.projectService.selectedProject() - 1];
 
-    const lines = [
-      `name: "${project.name}"`,
-      `stack: "${project.stack}"`,
-      `features: [${project.features.map((f) => `"${f}"`).join(', ')}]`,
-    ];
+    const lines = [`name: "${project.name}"`, `stack: "${project.stack}"`];
 
     if (project.frontend) {
       lines.push(`frontend: "${project.frontend}"`);
@@ -45,6 +41,11 @@ export class ProjectTypingComponent implements OnInit, OnDestroy {
     if (project.backend) {
       lines.push(`backend: "${project.backend}"`);
     }
+    if (project.features) {
+      lines.push(`features: [${project.features.map((f) => `"${f}"`).join(', ')}]`);
+    }
+
+    if (project.description) lines.push(`description: ${project.description}`);
 
     return `const project = {\n  ${lines.join(',\n  ')}\n};`;
   }

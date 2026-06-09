@@ -2,7 +2,7 @@
   <app-project-page title="Mohamed&lt;Home&gt;" [Navbar]="true">
     <div class="container w-full h-full m-auto text-center flex flex-col gap-4">
       <p class="page-title">home</p>
-      <p class="text-5xl text-base-neutral">
+      <p class="text-5xl text-base-neutral" style="word-spacing: -10px;">
         Hi, I'm Mohamed <br />a <span class="text-code-green">Software Engineer</span>
       </p>
       <p class="text-xs w-1/2 m-auto">
@@ -31,7 +31,7 @@
           <div class="w-40">
             <app-project-section title="portrait">
               <div class="w-full aspect-square">
-                <img src="https://placehold.co/400" alt="" >
+                <img src="assets/images/cvPhoto2.png" alt="" >
               </div>
             </app-project-section>
           </div>
@@ -105,7 +105,7 @@
 
       <!-- Project Details -->
       <div class="order-1 sm:order-2 flex justify-center">
-        <app-project-section title="current-project" class="w-full">
+        <app-project-section [title]="this.projectService.getSelectedProject?.name!" class="w-full">
           <div class="aspect-video overflow-hidden rounded-b-xl shadow-lg w-full">
             <img
               [src]="this.projectService.getSelectedProject?.projectSrc"
@@ -116,7 +116,7 @@
       </div>
     </div>
     <div class="w-full mt-8 relative z-40 px-8">
-      <div class="flex gap-4 overflow-x-auto pb-2 scrollbar-thumb-code-green justify-center">
+      <div class="flex gap-4 overflow-x-auto pb-2 scrollbar-thumb-code-green justify-start lg:justify-center">
         @for (project of projectService.projects; track project.id) {
           <button
             class="shrink-0 cursor-pointer transition hover:scale-105"
@@ -133,6 +133,78 @@
       </div>
     </div>
   </app-project-page>
+<app-project-page title="Mohamed&lt;Contact&gt;" [Navbar]="true">
+  <div
+    class="p-8 grid lg:grid-cols-2 gap-8 items-center w-full relative z-40"
+  >
+    <!-- Illustration -->
+    <div class="hidden lg:flex justify-center">
+      <img
+        src="assets/images/robotIllustration2.png"
+        alt="Contact Illustration"
+        class="max-w-4/5 h-auto rotate-y-180"
+      />
+    </div>
+
+    <!-- Contact Form -->
+    <div
+  class="bg-zinc-900/60 backdrop-blur-md border border-zinc-800 rounded-2xl p-6"
+>
+
+  <h2 class="text-3xl font-bold mb-6 text-center">Get In Touch</h2>
+
+  <!-- Contact Info -->
+  <div class="space-y-4 mb-8 ">
+    <div class="flex items-center gap-3 justify-center">
+      <i class="fa fa-envelope text-primary"></i>
+      <a
+        href="mailto:your-email@example.com"
+        class="hover:text-primary transition "
+      >
+        m.mamdouh1462@gmail.com
+      </a>
+    </div>
+
+    <div class="flex items-center gap-3 justify-center">
+      <i class="fa fa-phone text-primary"></i>
+      <a
+        href="tel:+201234567890"
+        class="hover:text-primary transition"
+      >
+        +20 121 114 1822
+      </a>
+    </div>
+  </div>
+
+  <!-- Contact Links -->
+  <div class="flex gap-6 mt-8 justify-center">
+  <a
+    href="https://www.linkedin.com/in/mohamedmamdouh1/"
+    target="_blank"
+    class="contact-icon flex justify-center"
+  >
+    <fa-icon [icon]="Icons.faLinkedin"></fa-icon>
+  </a>
+
+  <a
+    href="https://github.com/Mr-Mohaamed"
+    target="_blank"
+    class="contact-icon"
+  >
+    <fa-icon [icon]="Icons.faGithub"></fa-icon>
+  </a>
+
+  <a
+    href="https://www.facebook.com/00Mohamed.MamDouh/"
+    target="_blank"
+    class="contact-icon"
+  >
+    <fa-icon [icon]="Icons.faFacebook"></fa-icon>
+  </a>
+</div>
+</div>
+  </div>
+</app-project-page>
 </main>
 
 @if (isGalleryShown()) {
